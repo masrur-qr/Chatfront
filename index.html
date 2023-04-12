@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+        body {
+          font-family: Arial, sans-serif;
+        }
+        .file-upload {
+          position: relative;
+          overflow: hidden;
+          display: inline-block;
+        }
+        .file-upload input[type="file"] {
+          position: absolute;
+          top: 0;
+          right: 0;
+          margin: 0;
+          padding: 0;
+          font-size: 20px;
+          cursor: pointer;
+          opacity: 0;
+          filter: alpha(opacity=0);
+        }
+        .custom-file-upload {
+          display: inline-block;
+          padding: 12px 20px;
+          background-color: #4CAF50;
+          color: white;
+          border-radius: 5px;
+          font-size: 16px;
+          cursor: pointer;
+        }
+      </style>
+      
+      <form method="post" action="process-file.php" enctype="multipart/form-data">
+        <div class="file-upload">
+          <input type="file" id="file" name="file">
+        </div>
+        <label for="file" class="custom-file-upload">Upload File</label>
+        <br><br>
+        <input type="submit" value="Submit">
+      </form>
+      
+</body>
+</html>
