@@ -24,7 +24,7 @@ export default function Create() {
                 console.log(this.responseText);
                 if (this.status == 200){
                     console.log("passed");
-                    window.location.href = "/chat"
+                    // window.location.href = "/chat"
                 }else{
                     console.log("notpassed");
                 }
