@@ -35,7 +35,8 @@ export default function Create() {
             if (this.readyState === 4) {
                 if (this.status == 200) {
                     console.log(this.responseText);
-                    window.location.href = "/chat?" + document.cookie.split("=")[1]
+                    console.log(document.cookie.split("=")[1]);
+                    // window.location.href = "/chat?" + document.cookie.split("=")[1]
                 } else {
                     console.log("hello");
                     console.log(this.status);
