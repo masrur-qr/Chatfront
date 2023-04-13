@@ -31,7 +31,7 @@ export default function Create() {
     console.log(notification.length);
 
     useEffect(() => {
-        if (connect == false) {
+        if (connect === false) {
             // ? Make connection UseEffect is to prevent multiple request
             socket.current = new WebSocket("ws://" + Ip + "/ws")
             console.log("Connection to web Socket");
@@ -62,7 +62,7 @@ export default function Create() {
             var messageResponse = JSON.parse(msg.data)
             if (messageResponse == null) {
                 console.log("guy0");
-            } else if (messageResponse[0].type == "message") {
+            } else if (messageResponse[0].type === "message") {
                 setMessageList(messageResponse)
             } else if (messageResponse[0].type === "list") {
                 setUserList(messageResponse)
@@ -105,8 +105,8 @@ export default function Create() {
     // ? ====================== Map through the users arrey ===================
 
     var ULmap = userlist.map((item) =>
-        <li key={item.id} onClick={() => Userselect(item.id, item.name, item.imgurl)} className={item.id == cookieData[2] ? "display" : ""}>
-            <img src={cookieData[4] != "" ? "http://" + Ip + ":4500/static/upload/upload" + item.imgurl : avatar} alt="" className="useravatar" />
+        <li key={item.id} onClick={() => Userselect(item.id, item.name, item.imgurl)} className={item.id === cookieData[2] ? "display" : ""}>
+            <img src={cookieData[4] !== "" ? "http://" + Ip + ":4500/static/upload/upload" + item.imgurl : avatar} alt="" className="useravatar" />
             <p className="userfullname">{item.name}</p>
             <p className='note' id={item.id} ref={ref}>{notification.length}</p>
         </li>
@@ -114,9 +114,9 @@ export default function Create() {
 
     // var uselistmap = userlist.m
     // ?----------------- Fron JS ----------------------
-    const menuOpen = evt => {
-        document.getElementById('containerOne').style.display = "flex"
-    }
+    // const menuOpen = evt => {
+    //     document.getElementById('containerOne').style.display = "flex"
+    // }
     const menuClose = evt => {
         document.getElementById('containerOne').style.display = "none"
     }
@@ -125,7 +125,7 @@ export default function Create() {
         <div className="ChatPage">
             <div className="containerOne" id='containerOne'>
                 <div className="conOneHeader">
-                    <img src={cookieData[4] != "" ? "http://" + Ip + ":4500/static/upload/upload" + cookieData[4] : avatar} alt="" className="avatarimg" />
+                    <img src={cookieData[4] !== "" ? "http://" + Ip + ":4500/static/upload/upload" + cookieData[4] : avatar} alt="" className="avatarimg" />
                     <p className="fullname">{cookieData[0] + " " + cookieData[1]}</p>
                     <img src={x} alt="" id='close' className='close' onClick={menuClose} />
                 </div>
