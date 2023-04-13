@@ -4,7 +4,8 @@ import avatar from "../IMG/avatar.png"
 
 import Ip from "../Data/Data"
 console.log(document.cookie.split("=")[1]);
-document.cookie =  "hello hello"
+// coo
+document.cookie =  "hello " + document.cookie.split("=")[1]
 
 
 export default function Create() {
@@ -35,7 +36,7 @@ export default function Create() {
 
         xhr.addEventListener("readystatechange", function () {
             if (this.readyState === 4) {
-                if (this.status == 200) {
+                if (this.status === 200) {
                     console.log(this.responseText);
                     // window.location.href = "/chat?" + document.cookie.split("=")[1]
                 } else {
@@ -46,7 +47,7 @@ export default function Create() {
             }
         });
 
-        xhr.open("POST", "https://" + Ip + "/create");
+        xhr.open("POST", "http://" + Ip + "/create");
 
         xhr.send(data);
     }
