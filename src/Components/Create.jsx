@@ -47,7 +47,7 @@ export default function Create() {
             }
         });
 
-        xhr.open("POST", "http://" + Ip + "/create");
+        xhr.open("POST", "https://" + Ip + "/create");
 
         xhr.send(data);
     }
