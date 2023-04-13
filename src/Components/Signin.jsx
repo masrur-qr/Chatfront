@@ -22,7 +22,7 @@ export default function Create() {
         xhr.addEventListener("readystatechange", function () {
             if (this.readyState === 4) {
                 console.log(this.responseText);
-                if (this.status == 200){
+                if (this.status === 200){
                     console.log("passed");
                     // window.location.href = "/chat"
                 }else{

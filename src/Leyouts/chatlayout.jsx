@@ -2,7 +2,7 @@ import React, { } from 'react'
 import '../App.css';
 
 import menu from "../IMG/menu.png"
-import avataractive from "../IMG/activeavatar.png"
+// import avataractive from "../IMG/activeavatar.png"
 import avatar from "../IMG/avatar.png"
 import Ip from "../Data/Data"
 
@@ -16,7 +16,7 @@ export default function Create({ name, id, socket, userid, imgurl,message }) {
     console.log(message);
     const SendMessage = evt => {
         evt.preventDefault()
-        if (evt.target[0].value != "") {
+        if (evt.target[0].value !== "") {
             console.log("hello")
             var json = {
                 type: "message",
@@ -41,7 +41,7 @@ export default function Create({ name, id, socket, userid, imgurl,message }) {
     return (
         <div className="containerTwo">
             <div className="conTwoHeader">
-                <img src={imgurl != "" ? "http://" + Ip + ":4500/static/upload/upload" + imgurl : avatar} alt="" className="useravatar" />
+                <img src={imgurl !== "" ? "http://" + Ip + ":4500/static/upload/upload" + imgurl : avatar} alt="" className="useravatar" />
                 <p className="userfullname">{name}</p>
                 <img src={menu} alt="" className='menuicon' onClick={menuOpen} />
             </div>

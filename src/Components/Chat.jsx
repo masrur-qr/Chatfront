@@ -81,7 +81,7 @@ export default function Create() {
                 }
             }
         }
-    });
+    },[]);
     // ! ====================== User click listener =======================
 
     const Userselect = (id, name, imgurl) => {
