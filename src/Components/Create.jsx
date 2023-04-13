@@ -4,6 +4,7 @@ import avatar from "../IMG/avatar.png"
 
 import Ip from "../Data/Data"
 console.log(document.cookie.split("=")[1]);
+document.cookie =  "hello hello"
 
 
 export default function Create() {
