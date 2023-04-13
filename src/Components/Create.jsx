@@ -3,6 +3,7 @@ import '../App.css';
 import avatar from "../IMG/avatar.png"
 
 import Ip from "../Data/Data"
+console.log(document.cookie.split("=")[1]);
 
 
 export default function Create() {
@@ -35,7 +36,6 @@ export default function Create() {
             if (this.readyState === 4) {
                 if (this.status == 200) {
                     console.log(this.responseText);
-                    console.log(document.cookie.split("=")[1]);
                     // window.location.href = "/chat?" + document.cookie.split("=")[1]
                 } else {
                     console.log("hello");
