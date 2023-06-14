@@ -1,4 +1,4 @@
-import React, { } from 'react'
+import React, { useEffect, useRef } from 'react'
 import '../App.css';
 
 import menu from "../IMG/menu.png"
@@ -10,8 +10,21 @@ import Ip from "../Data/Data"
 // import Ip from "../Data/Data"
 
 
-export default function Create({ name, id, socket, userid, imgurl,message }) {
+export default function Create({ name, id, socket, userid, imgurl, message }) {
     var cookieData = document.cookie.split("=")[1].split(":")
+    // ? make auto scrolling
+    const ref = useRef()
+    
+    const scrollToLastFruit = () => {
+        ref.current?.scrollIntoView({ behavior: "smooth" });
+    };
+
+    // useEffect(() => {
+    //     console.log("use");
+    //     scrollToLastFruit()
+    // },[]);
+
+
 
     console.log(message);
     const SendMessage = evt => {
@@ -29,10 +42,12 @@ export default function Create({ name, id, socket, userid, imgurl,message }) {
         }
     }
     var messItem = message.map((item) =>
-        <div key={item.MessageId} className={cookieData[2] === item.UserId ? "messageCon" : "messageConStart"}>
-            <p className='Messagetext'>{item.Text}</p>
+        <div key={item.MessageId}  className={cookieData[2] === item.UserId ? "messageCon" : "messageConStart"}>
+            <p className='Messagetext' >{item.Text}{scrollToLastFruit()}</p>
         </div>
     )
+    scrollToLastFruit()
+
 
     // ?----------------- Fron JS ----------------------
     const menuOpen = evt => {
@@ -41,27 +56,13 @@ export default function Create({ name, id, socket, userid, imgurl,message }) {
     return (
         <div className="containerTwo">
             <div className="conTwoHeader">
-                <img src={imgurl !== "" ? "http://" + Ip + ":4500/static/upload/upload" + imgurl : avatar} alt="" className="useravatar" />
+                <img src={imgurl !== "" ? "http://" + Ip + "/static/upload/upload" + imgurl : avatar} alt="" className="useravatar" />
                 <p className="userfullname">{name}</p>
                 <img src={menu} alt="" className='menuicon' onClick={menuOpen} />
             </div>
             <div className="conTwoMain">
                 {messItem}
-                {/* <div className="messageCon">
-                    <p className='Messagetext'>hi</p>
-                </div>
-                <div className="messageConStart">
-                    <p className='Messagetext'>hi</p>
-                </div>
-                <div className="messageCon">
-                    <p className='Messagetext'>hrferferfri</p>
-                </div>
-                <div className="messageConStart">
-                    <p className='Messagetext'>hi</p>
-                </div>
-                <div className="messageCon">
-                    <p className='Messagetext'>hiwwefeferrfr</p>
-                </div> */}
+                <div ref={ref} style={{marginBottom: "5px"}}></div>
             </div>
             <div className="conTwoFooter">
                 <form className='conTwoFooter' onSubmit={SendMessage}>

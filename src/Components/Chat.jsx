@@ -28,7 +28,11 @@ export default function Create() {
     const socket = useRef();
     const ref = useRef(null)
     var cookieData = document.cookie.split("=")[1].split(":")
-    console.log(notification.length);
+    // console.log(notification.length);
+    // console.log(cookieData[4].split(";"));
+
+    var imgOfUser = "https://" + Ip + "/static/upload/upload" + cookieData[4].split(";")[0]
+    console.log(imgOfUser);
 
     useEffect(() => {
         if (connect === false) {
@@ -68,6 +72,7 @@ export default function Create() {
                 setUserList(messageResponse)
             } else if (messageResponse[0].type === "notification") {
                 setNotification(messageResponse)
+                console.log(notification);
             }
         }
         // ! ======================== Display notification on board ==================
@@ -81,7 +86,7 @@ export default function Create() {
                 }
             }
         }
-    },[connect, notification,requestSent, userSelected]);
+    }, [connect, notification, requestSent, userSelected]);
     // ! ====================== User click listener =======================
 
     const Userselect = (id, name, imgurl) => {
@@ -101,31 +106,34 @@ export default function Create() {
         if (document.getElementById(`${id}`).style.display === "block") {
             console.log(document.getElementById(`${id}`).style.display);
         }
+        document.getElementById(`${id}`).style.display = "none"
     }
     // ? ====================== Map through the users arrey ===================
+   
 
     var ULmap = userlist.map((item) =>
         <li key={item.id} onClick={() => Userselect(item.id, item.name, item.imgurl)} className={item.id === cookieData[2] ? "display" : ""}>
-            <img src={cookieData[4] !== "" ? "http://" + Ip + ":4500/static/upload/upload" + item.imgurl : avatar} alt="" className="useravatar" />
+            <img src={cookieData[4] !== "" ? "http://" + Ip + "/static/upload/upload" + item.imgurl : avatar} alt="" className="useravatar" />
             <p className="userfullname">{item.name}</p>
-            <p className='note' id={item.id} ref={ref}>{notification.length}</p>
+
+            {
+            notification.map((itemNote) =>
+                <p className={item.id === itemNote.userid ?"noteadd":"note"} key={itemNote.UserId} id={item.id === itemNote.userid ? item.id :""} ref={ref}>{item.id !== itemNote.userid ? "" : itemNote.amount}</p>
+                // <p className="noteadd" key={itemNote.UserId} id={item.id} ref={ref}>{item.id !== itemNote.userid ? "" : itemNote.amount}</p>
+            )
+            }
         </li>
     )
 
-    // var uselistmap = userlist.m
     // ?----------------- Fron JS ----------------------
-    // const menuOpen = evt => {
-    //     document.getElementById('containerOne').style.display = "flex"
-    // }
     const menuClose = evt => {
         document.getElementById('containerOne').style.display = "none"
     }
-    // console.log("http://" + Ip + ":4500/static/upload/upload" + cookieData[4]);
     return (
         <div className="ChatPage">
             <div className="containerOne" id='containerOne'>
                 <div className="conOneHeader">
-                    <img src={cookieData[4] !== "" ? "http://" + Ip + ":4500/static/upload/upload" + cookieData[4] : avatar} alt="" className="avatarimg" />
+                    <img src={cookieData[4] !== "" ? imgOfUser : avatar} alt="" className="avatarimg" />
                     <p className="fullname">{cookieData[0] + " " + cookieData[1]}</p>
                     <img src={x} alt="" id='close' className='close' onClick={menuClose} />
                 </div>
