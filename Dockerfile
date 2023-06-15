@@ -7,6 +7,7 @@ COPY package.json ./
 COPY package-lock.json ./
 
 RUN npm install npm@8.5.1 --location=global
+RUN npm install -g npm@9.7.1 
 
 # RUN npm install --frozen-lockfile
 
