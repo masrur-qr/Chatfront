@@ -37,7 +37,7 @@ export default function Create() {
     useEffect(() => {
         if (connect === false) {
             // ? Make connection UseEffect is to prevent multiple request
-            socket.current = new WebSocket("ws://" + Ip + "/ws")
+            socket.current = new WebSocket("wss://" + Ip + "/ws")
             console.log("Connection to web Socket");
             // ? Open connection and send first Data
             socket.current.onopen = () => {
