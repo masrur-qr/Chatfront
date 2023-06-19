@@ -36,25 +36,34 @@ export default function Create() {
 
     useEffect(() => {
         if (connect === false) {
-            // ? Make connection UseEffect is to prevent multiple request
-            socket.current = new WebSocket("wss://" + Ip + "/ws")
-            console.log("Connection to web Socket");
-            // ? Open connection and send first Data
-            socket.current.onopen = () => {
-                console.log("connected succesfully");
-                if (requestSent === false) {
-                    var json = {
-                        type: "list"
+            function WebConnect() {
+                // ? Make connection UseEffect is to prevent multiple request
+                socket.current = new WebSocket("wss://" + Ip + "/ws")
+                socket.onbeforeopen = (event) => {
+                    // Add the necessary headers for WebSocket upgrade
+                    socket.setRequestHeader('Connection', 'Upgrade');
+                    socket.setRequestHeader('Upgrade', 'websocket');
+                };
+                console.log("Connection to web Socket");
+                // ? Open connection and send first Data
+                socket.current.onopen = () => {
+                    console.log("connected succesfully");
+                    if (requestSent === false) {
+                        var json = {
+                            type: "list"
+                        }
+                        socket.current.send(JSON.stringify(json))
+                        setRequestSent(true)
                     }
-                    socket.current.send(JSON.stringify(json))
-                    setRequestSent(true)
                 }
+                setConnect(true)
             }
-            setConnect(true)
+            WebConnect()
         }
         // ? Listen close
         socket.current.onclose = (evt) => {
             console.log("connection closed", evt);
+            WebConnect()
         }
         // ? Listen error
         socket.current.onerror = (err) => {
@@ -109,18 +118,18 @@ export default function Create() {
         document.getElementById(`${id}`).style.display = "none"
     }
     // ? ====================== Map through the users arrey ===================
-   
+
 
     var ULmap = userlist.map((item) =>
         <li key={item.id} onClick={() => Userselect(item.id, item.name, item.imgurl)} className={item.id === cookieData[2] ? "display" : ""}>
-            <img src={cookieData[4] !== "" ? "http://" + Ip + "/static/upload/upload" + item.imgurl : avatar} alt="" className="useravatar" />
+            <img src={cookieData[4] !== "" ? "https://" + Ip + "/static/upload/upload" + item.imgurl : avatar} alt="" className="useravatar" />
             <p className="userfullname">{item.name}</p>
 
             {
-            notification.map((itemNote) =>
-                <p className={item.id === itemNote.userid ?"noteadd":"note"} key={itemNote.UserId} id={item.id === itemNote.userid ? item.id :""} ref={ref}>{item.id !== itemNote.userid ? "" : itemNote.amount}</p>
-                // <p className="noteadd" key={itemNote.UserId} id={item.id} ref={ref}>{item.id !== itemNote.userid ? "" : itemNote.amount}</p>
-            )
+                notification.map((itemNote) =>
+                    <p className={item.id === itemNote.userid ? "noteadd" : "note"} key={itemNote.UserId} id={item.id === itemNote.userid ? item.id : ""} ref={ref}>{item.id !== itemNote.userid ? "" : itemNote.amount}</p>
+                    // <p className="noteadd" key={itemNote.UserId} id={item.id} ref={ref}>{item.id !== itemNote.userid ? "" : itemNote.amount}</p>
+                )
             }
         </li>
     )
