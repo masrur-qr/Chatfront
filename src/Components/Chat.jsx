@@ -3,15 +3,14 @@ import '../App.css';
 import avatar from "../IMG/avatar.png"
 import exit from "../IMG/exit.png"
 import x from "../IMG/x.png"
-// import menu from "../IMG/menu.png"
-import Ip from "../Data/Data"
 import ChatScreen from "../Leyouts/chatlayout.jsx"
 
 
-
-
 export default function Create() {
-    // console.log("ti");
+    // ? ------------------ ENV
+    var protocol = process.env.REACT_APP_PROTOC
+    var webProtocol = process.env.REACT_APP_WEBPROTOC
+    var Ip = process.env.REACT_APP_IP
     // ! ------------------ Usesate declaretion -------------------
     const [userlist, setUserList] = useState([]);
     const [messagelist, setMessageList] = useState([]);
@@ -28,42 +27,44 @@ export default function Create() {
     const socket = useRef();
     const ref = useRef(null)
     var cookieData = document.cookie.split("=")[1].split(":")
-    // console.log(notification.length);
-    // console.log(cookieData[4].split(";"));
 
-    var imgOfUser = "https://" + Ip + "/static/upload/upload" + cookieData[4].split(";")[0]
-    console.log(imgOfUser);
+    var imgOfUser = protocol + Ip + "/static/upload/upload" + cookieData[4].split(";")[0]
 
+    function WebConnect() {
+        // ? Make connection UseEffect is to prevent multiple request
+        socket.current = new WebSocket(webProtocol + Ip + "/ws")
+        socket.onbeforeopen = (event) => {
+            // Add the necessary headers for WebSocket upgrade
+            socket.setRequestHeader('Connection', 'Upgrade');
+            socket.setRequestHeader('Upgrade', 'websocket');
+        };
+        console.log("Connection to web Socket");
+        // ? Open connection and send first Data
+        socket.current.onopen = () => {
+            console.log("connected succesfully");
+            if (requestSent === false) {
+                var json = {
+                    type: "list"
+                }
+                socket.current.send(JSON.stringify(json))
+                setRequestSent(true)
+            }
+        }
+        setConnect(true)
+    }
     useEffect(() => {
         if (connect === false) {
-            function WebConnect() {
-                // ? Make connection UseEffect is to prevent multiple request
-                socket.current = new WebSocket("wss://" + Ip + "/ws")
-                socket.onbeforeopen = (event) => {
-                    // Add the necessary headers for WebSocket upgrade
-                    socket.setRequestHeader('Connection', 'Upgrade');
-                    socket.setRequestHeader('Upgrade', 'websocket');
-                };
-                console.log("Connection to web Socket");
-                // ? Open connection and send first Data
-                socket.current.onopen = () => {
-                    console.log("connected succesfully");
-                    if (requestSent === false) {
-                        var json = {
-                            type: "list"
-                        }
-                        socket.current.send(JSON.stringify(json))
-                        setRequestSent(true)
-                    }
-                }
-                setConnect(true)
-            }
             WebConnect()
         }
         // ? Listen close
         socket.current.onclose = (evt) => {
             console.log("connection closed", evt);
-            WebConnect()
+            alert("Connectin closed. It would be reset after 30 sec")
+            setTimeout(() => {
+                WebConnect()
+                console.log("timer");
+            }, 1000);
+            console.log("Connecting again");
         }
         // ? Listen error
         socket.current.onerror = (err) => {
@@ -122,7 +123,7 @@ export default function Create() {
 
     var ULmap = userlist.map((item) =>
         <li key={item.id} onClick={() => Userselect(item.id, item.name, item.imgurl)} className={item.id === cookieData[2] ? "display" : ""}>
-            <img src={cookieData[4] !== "" ? "https://" + Ip + "/static/upload/upload" + item.imgurl : avatar} alt="" className="useravatar" />
+            <img src={cookieData[4] !== "" ? protocol + Ip + "/static/upload/upload" + item.imgurl : avatar} alt="" className="useravatar" />
             <p className="userfullname">{item.name}</p>
 
             {

@@ -2,13 +2,16 @@ import React, { useState } from 'react'
 import '../App.css';
 import avatar from "../IMG/avatar.png"
 
-import Ip from "../Data/Data"
 console.log(document.cookie.split("=")[1]);
 // coo
-document.cookie =  "hello " + document.cookie.split("=")[1]
+document.cookie = "hello " + document.cookie.split("=")[1]
 
 
 export default function Create() {
+    // ? ------------------ ENV
+    var protocol = process.env.REACT_APP_PROTOC
+    var Ip = process.env.REACT_APP_IP
+    // ! ---------------
     const [PreviewImage, setPreviewImage] = useState(avatar);
 
     const change = evt => {
@@ -38,8 +41,9 @@ export default function Create() {
             if (this.readyState === 4) {
                 if (this.status === 200) {
                     console.log(this.responseText);
-                    // window.location.href = "/chat?" + document.cookie.split("=")[1]
+                    window.location.href = "/chat?" + document.cookie.split("=")[1]
                 } else {
+                    alert(JSON.parse(this.responseText).Code)
                     console.log("hello");
                     console.log(this.status);
                     console.log();
@@ -47,7 +51,7 @@ export default function Create() {
             }
         });
 
-        xhr.open("POST", "https://" + Ip + "/create");
+        xhr.open("POST", protocol + Ip + "/create");
 
         xhr.send(data);
     }

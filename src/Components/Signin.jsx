@@ -1,12 +1,12 @@
 import React, { } from 'react'
 import '../App.css';
-import Ip from "../Data/Data"
-
-
-// import Ip from "../Data/Data"
 
 
 export default function Create() {
+    // ? ------------------ ENV
+    var protocol = process.env.REACT_APP_PROTOC
+    var Ip = process.env.REACT_APP_IP
+    // ! ---------------
     const getId = evt => {
         evt.preventDefault()
         console.log(evt);
@@ -22,16 +22,16 @@ export default function Create() {
         xhr.addEventListener("readystatechange", function () {
             if (this.readyState === 4) {
                 console.log(this.responseText);
-                if (this.status === 200){
+                if (this.status === 200) {
                     console.log("passed");
                     // window.location.href = "/chat"
-                }else{
+                } else {
                     console.log("notpassed");
                 }
             }
         });
 
-        xhr.open("POST", "https://" + Ip + "/signin");
+        xhr.open("POST", protocol + Ip + "/signin");
         xhr.send(data);
 
     }
