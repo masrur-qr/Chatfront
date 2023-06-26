@@ -21,21 +21,59 @@ export default function Create({ name, id, socket, userid, imgurl, message }) {
     console.log(message);
     const SendMessage = evt => {
         evt.preventDefault()
+        var json = {
+            type: "message",
+            reciverid: id,
+            userid: userid,
+            text: evt.target[0].value,
+        }
         if (evt.target[0].value !== "") {
-            console.log("hello")
-            var json = {
-                type: "message",
-                reciverid: id,
-                userid: userid,
-                text: evt.target[0].value,
-            }
             evt.target[0].value = ""
             socket.current.send(JSON.stringify(json))
+
+        } else if (evt.target[1].length != 0) {
+            console.log(evt.target[1].length != 0);
+            console.log(evt.target[1].value.length);
+            console.log(evt.target[1].value);
+            json.type = "file"
+
+            var file = evt.target[1].files[0]
+
+            var rawData = new ArrayBuffer();
+            var reader = new FileReader();
+
+
+            reader.loadend = function () {
+
+            }
+
+            reader.onload = function (e) {
+                rawData = e.target.result;
+                const combinedData = {
+                    file: rawData,
+                    json: JSON.stringify(json),
+                };
+
+                evt.target[1].value = ""
+                socket.current.send(rawData)
+                alert("the File has been transferred.")
+            }
+
+            reader.readAsArrayBuffer(file);
+
         }
     }
     var messItem = message.map((item) =>
         <div key={item.MessageId} className={cookieData[2] === item.UserId ? "messageCon" : "messageConStart"}>
-            <p className='Messagetext' >{item.Text}{scrollToLastFruit()}</p>
+            {/* <p className='Messagetext' >{item.Text}{scrollToLastFruit()}</p> */}
+            {item.type === "file" ?
+                <a href={protocol+Ip+"/static/" + item.Text} className='Messagetext' >
+                    {/* {item.Text} */}
+                    <img src={protocol+Ip+"/static/" + item.Text} alt="" className='fileDisplay' />
+                    {scrollToLastFruit()}
+                </a>
+                :
+                <p className='Messagetext' >{item.Text}{scrollToLastFruit()}</p>}
         </div>
     )
     scrollToLastFruit()
@@ -60,7 +98,7 @@ export default function Create({ name, id, socket, userid, imgurl, message }) {
                 <form className='conTwoFooter' onSubmit={SendMessage}>
                     <input type="text" className='messageText' placeholder='Message' />
                     <div className="file-upload">
-                        <input type="file" id='messageFileSend' className='messageFileSend' />
+                        <input type="file" id='messageFileSend' name='img' className='messageFileSend' />
                     </div>
                     <label htmlFor="messageFileSend" className='FileLabel'>File</label>
                     {/* <input type="file" name="" id="" value="File" className='messageFileSend' /> */}

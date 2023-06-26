@@ -398,12 +398,19 @@ body {
   font-size: 1.2rem;
   padding: .3em .5em;
   width: fit-content;
+  height: fit-content;
+  /* max-width: ; */
+  display: flex;
+  flex-wrap: wrap;
   border-top-left-radius: 1em;
   border-top-right-radius: .8em;
   border-bottom-left-radius: .2em;
   border-bottom-right-radius: 1em;
 }
-
+.fileDisplay{
+  width: 15em;
+  height: fit-content;
+}
 .conTwoMain {
   overflow-y: scroll;
   height: 30em;
@@ -422,7 +429,7 @@ body {
 .messageConStart {
   display: flex;
   justify-content: flex-start;
-  height: 2em;
+  height: fit-content;
 }
 
 .messageCon>.Messagetext {

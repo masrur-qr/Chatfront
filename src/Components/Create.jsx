@@ -11,6 +11,7 @@ export default function Create() {
     // ? ------------------ ENV
     var protocol = process.env.REACT_APP_PROTOC
     var Ip = process.env.REACT_APP_IP
+    console.log(Ip,protocol);
     // ! ---------------
     const [PreviewImage, setPreviewImage] = useState(avatar);
 
@@ -45,8 +46,6 @@ export default function Create() {
                 } else {
                     alert(JSON.parse(this.responseText).Code)
                     console.log("hello");
-                    console.log(this.status);
-                    console.log();
                 }
             }
         });
@@ -82,7 +81,7 @@ export default function Create() {
                     {/* <button className='createFormClick' onClick={getId} id="">Submit</button> */}
                 </div>
                 <input type="submit" id="CreateSubmit" className='createFormClick' />
-                <a href="/chat">Back to manu</a>
+                <a href="/">Back to manu</a>
             </form>
         </div>
     )

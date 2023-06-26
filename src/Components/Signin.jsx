@@ -6,6 +6,7 @@ export default function Create() {
     // ? ------------------ ENV
     var protocol = process.env.REACT_APP_PROTOC
     var Ip = process.env.REACT_APP_IP
+    console.log(Ip,protocol);
     // ! ---------------
     const getId = evt => {
         evt.preventDefault()
@@ -24,8 +25,9 @@ export default function Create() {
                 console.log(this.responseText);
                 if (this.status === 200) {
                     console.log("passed");
-                    // window.location.href = "/chat"
+                    window.location.href = "/chat"
                 } else {
+                    alert(JSON.parse(this.responseText).Code)
                     console.log("notpassed");
                 }
             }

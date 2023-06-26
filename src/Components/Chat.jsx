@@ -60,6 +60,7 @@ export default function Create() {
         socket.current.onclose = (evt) => {
             console.log("connection closed", evt);
             alert("Connectin closed. It would be reset after 30 sec")
+            window.location.reload()
             setTimeout(() => {
                 WebConnect()
                 console.log("timer");
