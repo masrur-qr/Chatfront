@@ -27,11 +27,11 @@ export default function Create({ name, id, socket, userid, imgurl, message }) {
             userid: userid,
             text: evt.target[0].value,
         }
-        if (evt.target[0].value !== "") {
+        if (evt.target[0].value !== "" && evt.target[1].value.length == 0) {
             evt.target[0].value = ""
             socket.current.send(JSON.stringify(json))
 
-        } else if (evt.target[1].length != 0) {
+        } else if (evt.target[1].value.length > 0) {
             console.log(evt.target[1].length != 0);
             console.log(evt.target[1].value.length);
             console.log(evt.target[1].value);
@@ -43,22 +43,49 @@ export default function Create({ name, id, socket, userid, imgurl, message }) {
             var reader = new FileReader();
 
 
-            reader.loadend = function () {
+            // reader.readAsText(file)
 
-            }
 
             reader.onload = function (e) {
                 rawData = e.target.result;
+                // var chunkes = rawData.byteLength / 2  // set chunk size
+                // console.log(chunkes);
+                // console.log(rawData.byteLength);
+                var chunkes = 100536 // set chunk size
+                var offset = 0 // ofsste will be used slice the element from rawData
+                var bt = ""
+                // console.log(rawData.byteLength);
+                for (let index = 0; index < rawData.byteLength; index++) {
+                    var chunk = rawData.slice(offset, chunkes + offset)
+                    // bt += btoa(String.fromCharCode(null,new Uint8Array(chunk)))
+                    bt += btoa(String.fromCharCode(...new Uint8Array(chunk)))
+                    offset += chunkes
+                }
+                console.log(bt);
+                // ! befor sending file convert it into base 64
+                // ? if th file size is too big divede it into partes decode them join them and send.
+                // var er = btoa(String.fromCharCode(...new Uint8Array(rawData)))
+                // console.log("er-" + er);
+                // ! sendfile and data
                 const combinedData = {
-                    file: rawData,
-                    json: JSON.stringify(json),
+                    Json: JSON.stringify(json),
+                    File: bt,
                 };
 
                 evt.target[1].value = ""
-                socket.current.send(rawData)
-                alert("the File has been transferred.")
+                socket.current.send(JSON.stringify(combinedData))
+                // console.log(JSON.stringify(combinedData));
+
+
+                // socket.current.send(bt)
+                // socket.current.send(rawData)
+                // alert("the File has been transferred.")
             }
 
+            reader.loadend = function () {
+                console.log("load end");
+                alert("the File has been transferred.")
+            }
             reader.readAsArrayBuffer(file);
 
         }
@@ -67,9 +94,13 @@ export default function Create({ name, id, socket, userid, imgurl, message }) {
         <div key={item.MessageId} className={cookieData[2] === item.UserId ? "messageCon" : "messageConStart"}>
             {/* <p className='Messagetext' >{item.Text}{scrollToLastFruit()}</p> */}
             {item.type === "file" ?
-                <a href={protocol+Ip+"/static/" + item.Text} className='Messagetext' >
+                <a href={protocol + Ip + "/static/" + item.ImgUrl} className='Messagetext' >
                     {/* {item.Text} */}
-                    <img src={protocol+Ip+"/static/" + item.Text} alt="" className='fileDisplay' />
+                    {/* <div> */}
+                        <img src={protocol + Ip + "/static/" + item.ImgUrl} alt="" className='fileDisplay' />
+                        <p className='Messagetext' >{item.Text}</p>
+                    {/* </div> */}
+
                     {scrollToLastFruit()}
                 </a>
                 :

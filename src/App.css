@@ -423,7 +423,7 @@ body {
 .messageCon {
   display: flex;
   justify-content: flex-end;
-  height: 2em;
+  height: fit-content;
 }
 
 .messageConStart {

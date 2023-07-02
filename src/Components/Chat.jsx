@@ -77,8 +77,9 @@ export default function Create() {
             var messageResponse = JSON.parse(msg.data)
             if (messageResponse == null) {
                 console.log("guy0");
-            } else if (messageResponse[0].type === "message") {
+            } else if (messageResponse[0].type === "message" || messageResponse[0].type === "file" ) {
                 setMessageList(messageResponse)
+                console.log(messagelist);
             } else if (messageResponse[0].type === "list") {
                 setUserList(messageResponse)
             } else if (messageResponse[0].type === "notification") {
@@ -101,12 +102,15 @@ export default function Create() {
     // ! ====================== User click listener =======================
 
     const Userselect = (id, name, imgurl) => {
+        console.log(messagelist);
+
         console.log(id);
         setuserSelected(true)
         setCurentUserId(id)
         setCurentUserName(name)
         setMessageList([])
         setCurentimageurl(imgurl)
+        console.log(messagelist);
 
         // ? on user click open chat wit this person (get all messages with this person)
         var json = {
@@ -114,10 +118,10 @@ export default function Create() {
             reciverid: id
         }
         socket.current.send(JSON.stringify(json))
-        if (document.getElementById(`${id}`).style.display === "block") {
-            console.log(document.getElementById(`${id}`).style.display);
-        }
-        document.getElementById(`${id}`).style.display = "none"
+        // if (document.getElementById(`${id}`).style.display === "block") {
+        //     console.log(document.getElementById(`${id}`).style.display);
+        // }
+        // document.getElementById(`${id}`).style.display = "none"
     }
     // ? ====================== Map through the users arrey ===================
 
